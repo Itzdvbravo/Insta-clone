@@ -1,0 +1,62 @@
+.Account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account__container {
+    margin-top: 15px;
+    border: 1px solid lightgray;
+    display: inline-flex;
+    /*width: calc(100vw - 15vw);*/
+}
+
+.account__options {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid lightgray;
+    width: 200px;
+}
+
+.account__options p {
+    text-align: center;
+    padding: 10px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.account__options .active {
+    border-left: 1px solid black;
+    font-weight: 500;
+}
+
+.account__box {
+    width: 100%;
+}
+
+.account__choose {
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.account__back {
+    position: absolute;
+}
+
+@media screen and (min-width: 690px) {
+    .account__back {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    .account__container {
+        width: 100vw;
+        border: none;
+    }
+
+    .account__options {
+        border: none;
+        flex: 1;
+    }
+}

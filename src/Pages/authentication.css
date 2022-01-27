@@ -1,0 +1,95 @@
+.authentication {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.authentication__container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.authentication__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    margin-bottom: 50px;
+}
+
+.authentication__mainEnd div{
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.authentication__mainEnd span {
+    color: #0053ff;
+}
+
+.authentication__mainEnd p {
+    color: #8e8e8e;
+}
+
+.authentication__mainMid {
+    width: 300px;
+    margin-bottom: 5px;
+}
+
+.authentication__divider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 250px;
+    margin: 10px 0;
+}
+
+.authentication__divider p {
+    margin: 0 5px;
+}
+
+.authentication__divider div {
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: #dbdbdb;
+    height: 2px;
+}
+
+.authentication__image {
+    z-index: -1;
+    position: relative;
+    width: 240px;
+    transform: rotate(15deg);
+    top: -27px;
+    left: 1px;
+}
+
+.authentication__exceptBtn {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .authentication__main {
+        flex-direction: column;
+    }
+
+    .authentication__mainEnd {
+        margin-top: 20px;
+    }
+
+    .authentication__mainMid {
+        width: 100%;
+    }
+
+    .authentication__divider {
+        width: 100%;
+    }
+
+    .authentication__image {
+        display: none;
+    }
+}
