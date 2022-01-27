@@ -1,0 +1,40 @@
+.Suggestions {
+    width: 292.99px;
+}
+
+.suggestions__user {
+    margin-bottom: 10px;
+}
+
+.suggestions__user .suggestions__userAvatar {
+    width: 50px!important;
+    height: 50px!important;
+    margin-right: 5px;
+}
+
+.suggestions__user p:last-child {
+    font-size: 14px;
+}
+
+.suggestions__divider {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suggestions__divider p:first-child {
+    color: #8e8e8e;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.suggestions__divider p:last-child {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 1000px) {
+    .Suggestions {
+        display: none;
+    }
+}

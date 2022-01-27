@@ -1,0 +1,20 @@
+.Search {
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    padding: 2px 12px;
+}
+
+.Search svg {
+    color: lightgray;
+    width: 16px!important;
+    height: 16px!important;
+}
+
+.Search input {
+    border: none;
+}
+
+.Search input:focus {
+    outline: none;
+}

@@ -1,0 +1,18 @@
+.user-story {
+    margin: 0 10px;
+}
+
+.user-story__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-story__avatar {
+    width: 56px!important;
+    height: 56px!important;
+}
+
+.user-story__username {
+    font-size: 12px;
+}
