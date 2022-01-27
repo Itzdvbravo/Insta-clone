@@ -1,0 +1,167 @@
+.Post {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto 20px auto;
+}
+
+.post__morePostOptions {
+    display: flex;
+    flex-direction: column;
+}
+
+.post__morePostOptions > * {
+    cursor: pointer;
+}
+
+.post__morePostOptions p, .post__morePostOptions a {
+    display: block;
+    font-size: 0.9rem;
+    padding: 8px 0;
+    text-align: center;
+    border-top: 1px solid rgba(219, 219, 219, 1);
+}
+
+.post__morePostOptions p:first-child, .post__morePostOptions a:first-child {
+    border-top: 1px solid white;
+    border-radius: 10px;
+}
+
+.post__morePostOptions:focus {
+    outline: none;
+}
+
+.post__morePostOptions .post__warning {
+    font-weight: bold;
+    color: red;
+}
+
+.post__image {
+    width: 100%;
+}
+
+.post__userContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 14px 14px 16px;
+}
+
+.post__userContainer > *{
+    cursor: pointer;
+}
+
+.post__user-avatar {
+    width: 32px!important;
+    height: 32px!important;
+    margin-right: 5px;
+}
+
+.post__user-name {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.post__midSec {
+    padding: 0 16px;
+}
+
+.post__actions {
+    padding: 6px 0 8px;
+    display: flex;
+    align-items: center;
+}
+
+.post__actions > * {
+    cursor: pointer;
+}
+
+.post__midSec .post__actions svg {
+    width: 1.1em!important;
+    height: 1.1em!important;
+    margin-right: 9px;
+}
+
+.post__activityInfo {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.liked {
+    fill: #ed4956!important;
+}
+
+.post__caption {
+    margin: 5px 0 15px 0;
+    display: flex;
+}
+
+.post__captionUser {
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.post__comment {
+    width: calc(100% - 14px);
+    height: 30px;
+    border: 1px solid lightgray;
+    border-top: none;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+}
+
+.post__commentInput {
+    resize: none;
+    border: none;
+    background-color: transparent;
+    height: 14px;
+    width: 100%;
+    font-size: 13px;
+    padding: 0 0 0 8px;
+}
+
+.post__commentInput:focus {
+    outline: none;
+}
+
+.post__commentBtn {
+    border: none;
+    cursor: pointer;
+    color: rgb(32, 147, 255);
+}
+
+.post__actions-hovered {
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+}
+
+.post__actions-hovered p{
+    color: white;
+    font-size: 12px;
+}
+
+.post__actions-hovered .post__actions {
+    padding: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.post__actions-hovered div {
+    margin-right: 8px;
+}
+
+.post__actions-hovered .post__actions svg {
+    width: 0.7em!important;
+    height: 0.7em!important;
+    color: white;
+}
+
+@media screen and (min-width: 552px){
+    .Post {
+        border: 1px solid lightgray;
+    }
+}
+

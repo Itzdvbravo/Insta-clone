@@ -1,0 +1,80 @@
+.imageupload {
+  width: 100%;
+}
+
+.imageupload__header p {
+  font-size: 15px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.imageupload__header {
+  border-bottom: 1px solid #bdbfbe;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.imageupload__currentStepChanger {
+  color: #555555;
+  cursor: pointer;
+}
+
+.no-image,
+.no-image__horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.no-image__horizontal {
+  flex-direction: row;
+}
+
+.no-image__addphotoslogo {
+  width: 50px !important;
+  height: 50px !important;
+  margin-bottom: 10px;
+}
+
+.no-image p {
+  font-weight: 300;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.submit-btn {
+  color: #fff !important;
+  background-color: #0095f6 !important;
+  font-weight: 600 !important;
+  padding: 5px 9px !important;
+  font-size: 12px !important;
+}
+
+.makesure {
+  display: flex;
+  flex-direction: column;
+}
+
+.makesure__header {
+  text-align: center;
+}
+
+.makesure__header h3 {
+  font-size: 16px;
+}
+
+.makesure__headerExtra {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+.makesure__option {
+  display: flex;
+  flex-direction: column;
+}
+
+.makesure__optionDiscard {
+  color: red !important;
+}

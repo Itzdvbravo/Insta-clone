@@ -1,0 +1,28 @@
+.authenticator__form, .authenticator__inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.authenticator__inputs {
+    margin-bottom: 10px;
+}
+
+.authenticator__input {
+    width: 250px;
+}
+
+.authenticator__input input {
+    padding: 7px 0px 8px 9px!important;
+}
+
+.authenticator__input label {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.authenticator__button {
+    width: 250px;
+    text-transform: none!important;
+    background-color: rgb(0,149,246)!important;
+}

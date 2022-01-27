@@ -1,0 +1,84 @@
+.Step3 {
+    display: flex;
+}
+
+.step3__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #bdbfbe;
+}
+
+.step3__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.step3__userAvatar {
+    width: 30px!important;
+    height: 30px!important;
+    margin-right: 8px;
+}
+
+.step3__user > p {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.step3__right {
+    padding: 10px;
+}
+
+.step3__caption {
+    width: 250px;
+}
+
+.step3__captionInput {
+    resize: none;
+    border: none;
+    height: 100px;
+    width: 100%;
+}
+
+.step3__captionInput:focus {
+    outline: none;
+}
+
+.step3__captionBottom {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #bdbfbe;
+}
+
+.step3__captionBottom svg {
+    width: 20px;
+    height: 20px;
+}
+
+.step3__captionBottom p {
+    font-size: 12px;
+    transition: font-size 0.2s;
+}
+
+.step3__captionBottom > * {
+    color: #696969;
+}
+
+@media screen and (max-width: 780px) {
+    .Step3 {
+        display: block;
+    }
+
+    .step3__captionBottom {
+        border-bottom: none;
+    }
+
+    .step3__caption {
+        width: 100%;
+    }
+}

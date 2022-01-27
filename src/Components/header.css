@@ -1,0 +1,128 @@
+.Header {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 32px);
+    padding: 0 16px;
+    border-bottom: 1px solid lightgray;
+    justify-content: space-between;
+}
+
+.header__verify {
+    font-size: 15px;
+    font-weight: 500;
+    color: #8e8e8e;
+}
+
+.Header a {
+    text-decoration: none!important;
+    color: black!important;
+}
+
+.Header svg {
+    cursor: pointer;
+}
+
+.header__logo {
+    display: flex;
+}
+
+.header__logo img {
+    width: 103px;
+}
+
+.header__left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+}
+
+.header__right {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 32px);
+    padding: 0 16px;
+    background-color: white;
+    z-index: 999;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid lightgray;
+    justify-content: space-around;
+}
+
+.header__right svg {
+    height: 1.8rem!important;
+    width: 1.8rem!important;
+}
+
+.header__avatar, .header__avatar svg {
+    width: 24px!important;
+    height: 24px!important;
+    font-size: 0.95rem!important;
+}
+
+@media screen and (max-width: 740px) {
+    .showonpc {
+        display: none!important;
+    }
+}
+
+@media screen and (max-width: 700px) and (min-width: 495px) {
+    .header__right {
+        padding: 0 80px;
+        width: calc(100% - 160px);
+    }
+}
+
+@media screen and (max-width: 735px) and (min-width: 700px) {
+    .header__right {
+        padding: 0 100px;
+        width: calc(100% - 200px);
+    }
+}
+
+@media screen and (min-width: 741px) {
+    .header__logo {
+        width: 13.15rem;
+    }
+
+    .notshowonpc {
+        display: none!important;
+    }
+
+    .header__left {
+        flex: 0;
+    }
+
+    .header__right {
+        position: static;
+        padding: 0;
+        border-top: none;
+        justify-content: space-between;
+        max-width: 210px;
+    }
+
+    .header__right svg {
+        height: 24px!important;
+        width: 24px!important;
+    }
+
+    .header__right .cramp {
+        width: 22px!important;
+        height: 22px!important;
+    }
+
+
+    .header__avatar, .header__avatar svg {
+        width: 22px!important;
+        height: 22px!important;
+    }
+
+    .Home {
+        padding: 20px 0;
+        max-height: calc(100vh - 85px);
+    }
+}

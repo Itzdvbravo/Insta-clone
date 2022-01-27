@@ -1,0 +1,127 @@
+.step2__imagebody {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 2px 2px 2px;
+    position: relative;
+}
+
+.step2__imagebodyV {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.step2__imageOuterContainer {
+    overflow: hidden;
+    background-color: rgb(202, 202, 202);
+}
+
+.step2__bottom {
+    z-index: 10;
+    position: absolute;
+    bottom: 25px;
+    display: flex;
+}
+
+.step2__bottomItem {
+    margin-left: 15px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.step2__bottomV {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.step2__bottomItem svg {
+    width: 18px!important;
+    height: 18px!important;
+}
+
+
+.step2__menu .MuiMenuItem-root {
+    padding: 0 15px;
+}
+
+.step2__menu .MuiSlider-root {
+    padding: 8px 0;
+}
+
+.step2__menu .MuiSlider-rail {
+    color: black;
+}
+
+.step2__menu .MuiSlider-thumb, .step2__menu .MuiSlider-track{
+    color: white!important;
+}
+
+.step2__menu .MuiPopover-paper {
+    background-color: transparent;
+}
+
+.step2__menu .MuiMenu-list{
+    background-color: rgba(0,0,0, 0.5);
+}
+
+.step2__menu-changeOritentation {
+    width: 110px;
+}
+
+.step2__menu-changeOritentation p {
+    font-size: 13px;
+}
+
+.step2__menu-changeOritentation > * {
+    width: 100%!important;
+    justify-content: space-between!important;
+    padding-top: 4px!important;
+    padding-bottom: 4px!important;
+    border-bottom: 1px solid rgba(211,211,211, 0.5)!important;
+}
+
+.step2__menu-changeOritentation li:first-of-type {
+    padding-top: 0px!important;
+}
+
+.step2__menu-changeOritentation li:last-of-type {
+    padding-bottom: 0!important;
+    border-bottom: none!important;
+}
+
+.step2__menu-changeOritentation * {
+    color: rgba(211,211,211, 0.8)
+}
+
+.step2__menu-changeOritentation .active * {
+    color: white;
+}
+
+.panner {
+    position: relative;
+}
+
+.grid {
+    border: 1px solid lightgray;
+}
+
+.grids {
+    z-index: 1;
+    width: calc(100% - 2px);
+    height: calc(100% - 3px);
+    position: absolute;
+    border: 1px solid rgb(211 211 211 / 60%);
+    justify-content: space-evenly;
+    display: flex;
+}
+
+.grids-vert {
+    flex-direction: column;
+}
