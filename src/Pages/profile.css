@@ -1,0 +1,357 @@
+.Profile {
+    max-width: 935px;
+    margin: auto;
+}
+
+.profile__scroller {
+    overflow-y: scroll;
+    max-height: calc(100vh - 90px);
+    overflow-x: hidden;
+}
+
+.profile__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+    padding: 0 16px;
+    border-bottom: 1px solid lightgray;
+    z-index: 99999;
+    background-color: white;
+    position: sticky;
+    top: -2px;
+}
+
+.profile__header svg {
+    width: 24px!important;
+    height: 24px!important;
+}
+
+.settings__icon {
+    width: 20px!important;
+    height: 20px!important;
+    cursor: pointer;
+}
+
+.profile__headerUsername {
+    font-weight: 600;
+    font-size: 20px;
+    color: #262626;
+}
+
+.profile__userHeader {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin: 16px 16px 24px 16px;
+}
+
+.profile__userHeaderSide {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.profile__userStatistics {
+    display: flex;
+    padding: 8px 0;
+    justify-content: space-around;
+    border-bottom: 1px solid lightgray;
+}
+
+.profile__userStatistics div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    cursor: pointer;
+}
+
+.profile__username {
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.profile__userStatistics div p:last-child {
+    font-size: 13px;
+    color: #8e8e8e;
+}
+
+
+.profile__userAvatar {
+    width: 77px!important;
+    height: 77px!important;
+}
+
+.profile__username {
+    font-size: 28px;
+    font-weight: 300;
+    text-align: left;
+}
+
+.profile__editBtn {
+    padding: 2px 9px;
+    width: 250px;
+    text-transform: none;
+    color: black;
+    font-weight: 550;
+    font-size: 13px;
+    border: 1px solid lightgray;
+}
+
+.profile__userDetail {
+    padding: 0 16px 21px;
+    border-bottom: 1px solid lightgray;
+}
+
+.profile__userDetail_n {
+    padding: 0!important;
+    border: unset;
+
+}
+
+.profile__userDetailName {
+    font-size: 14px;
+    font-weight: 500;
+    color: #262626;
+}
+
+.profile__bio {
+    font-size: 14px;
+    color: #262626;
+}
+
+.profile__selectionContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 44px;
+    border-bottom: 1px solid lightgray;
+}
+
+.profile__selectionContainer svg {
+    width: 31px!important;
+    height: 31px!important;
+    /*color: #8e8e8e;*/
+}
+
+.profile__selectionContainer div {
+    cursor: pointer;
+}
+
+.posts__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.post img {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+}
+
+.posts__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    max-width: 935px;
+    -webkit-flex: 1 0 0%;
+}
+
+.post {
+    position: relative!important;
+    width: 100%;
+    max-width: 293px;
+    max-height: 293px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+}
+
+.posts__row .post:last-child {
+    margin-right: 0;
+}
+
+.post:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.post img, .post .post__actions-hovered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height:100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profile__follow-message {
+    display: flex;
+    align-items: center;
+}
+
+.profile__follow-messageBtn {
+    flex: 1;
+    font-size: 13px;
+    padding: 3px 5px;
+    border: 1px solid lightgray;
+    text-align: center;
+    width: 150px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.profile__follow-followBtn {
+    cursor: pointer;
+    font-size: 12px;
+    padding: 3px 0px;
+    border: 1px solid lightgray;
+    text-align: center;
+    width: 150px;
+    margin-right: 5px;
+}
+
+.profile__follow-unfollowBtn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 5px;
+    border: 1px solid lightgray;
+}
+
+.profile__follow-message svg{
+    width: 15px;
+    height: 15px;
+}
+
+.profile__follow-unfollowBtn .profile__follow-messageTick {
+    width: 10px;
+    height: 10px;
+}
+
+@media screen and (min-width: 741px)  {
+    .Profile {
+        padding: 30px 20px 0
+    }
+
+    .profile__username {
+        margin-right: 8px;
+    }
+
+    .profile__userHeader {
+        margin: 0;
+    }
+
+    .profile__userAvatar {
+        width: 150px!important;
+        height: 150px!important;
+        margin: 0 40px;
+    }
+
+    .profile__useHeaderSideUpper {
+        display: flex;
+        align-items: center;
+    }
+
+    .profile__editBtn {
+        width: 100px;
+        padding: 2px 9px;
+        font-size: 11px;
+    }
+
+    .profile__follow-messageBtn {
+        width: 100px;
+    }
+
+    .profile__userHeader {
+        align-items: unset;
+    }
+
+    .profile__userHeaderSide {
+        justify-content: space-between;
+    }
+
+    .profile__userStatistics {
+        display: flex;
+        padding: 8px 0;
+        justify-content: space-around;
+        border: none;
+    }
+
+    .profile__userStatistics div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        margin-right: 8px;
+    }
+
+    .profile__userStatistics div p:first-child {
+        font-size: 14px;
+        margin-right: 5px;
+        font-weight: 600;
+    }
+
+
+    .profile__userStatistics div p:last-child {
+        font-size: 14px;
+        color: #262626;
+    }
+
+    .profile__userInfo {
+        padding-bottom: 50px;
+        border-bottom: 1px solid lightgray;
+    }
+
+    .profile__selection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile__selectionContainer {
+        justify-content: unset;
+        border-bottom: none;
+    }
+
+    .profile__selectionContainer div {
+        display: flex;
+        align-items: center;
+        margin-right: 60px;
+    }
+
+    .profile__selectionContainer div p {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .profile__selectionContainer svg {
+        width: 20px!important;
+        height: 20px!important;
+        margin-right: 4px;
+    }
+
+    .profile__scroller {
+        overflow-y: scroll;
+        max-height: calc(100vh - 45px);
+    }
+
+    .post {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 374px) {
+    .profile__editBtn, .profile__follow-messageBtn, .profile__follow-followBtn {
+        width: calc(100vw - 77px - 60px - 57px);
+    }
+}

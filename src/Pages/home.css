@@ -1,0 +1,106 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: calc(100vh - 90px);
+    overflow-y: scroll;
+}
+
+.home__verified {
+    font-size: 15px;
+    font-weight: 500;
+    color: #8e8e8e;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.home__container {
+    display: flex;
+}
+
+.home__left {
+    width: 100%;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+}
+
+.avatar p:last-child {
+    font-weight: 500;
+}
+
+.stories {
+    width: calc(100vw - 3px);
+    display: flex;
+    height: 85px;
+    padding: 10px 3px 10px 0;
+    border-bottom: 1px solid lightgray;
+    align-items: center;
+    position: relative;
+}
+
+.stories__container {
+    display: flex;
+    position: relative;
+    left: 0;
+    transition: left 1s;
+}
+
+.stories__buttons {
+    position: absolute!important;
+    z-index: 999;
+    color: black!important;
+}
+
+.stories__buttons svg {
+    border-radius: 50%;
+    background-color: #dbdbdb!important;
+}
+
+.stories__buttonsRight {
+    right: 0;
+}
+
+.stories__buttonsLeft {
+    left: 0;
+}
+
+@media screen and (min-width: 552px) {
+    .home__left {
+        margin-right: 28px;
+        max-width: 550px;
+        width: 480px;
+    }
+    .stories {
+        width: calc(100% - 8px);
+        padding: 7px 0 7px 8px;
+        margin: 0  auto 15px auto;
+        border: 1px solid lightgray;
+    }
+}
+
+@media screen and (min-width: 740px) {
+    .Home {
+        padding: 20px 0;
+        max-height: calc(100vh - 85px);
+    }
+
+    .home__verified {
+        font-size: 20px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .false__suggestionContainer {
+        top: 0;
+        position: sticky;
+        height: fit-content;
+    }
+
+    .false__suggestion {
+        width: 292.99px;
+        height: 9px;
+    }
+}

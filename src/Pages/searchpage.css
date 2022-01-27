@@ -1,0 +1,91 @@
+.searchpage__header {
+  display: flex;
+  height: 45px;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.searchpage__backBtn {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+}
+
+.searchpage__header > center {
+  flex: 1;
+}
+
+.searchpage__header .Search {
+  width: calc(100% - 128px);
+}
+
+.searchpage__header .Search input {
+  width: 100%;
+}
+
+.searchpage__container {
+  height: calc(100vh - 110px);
+  overflow-y: scroll;
+  padding: 10px 15px;
+}
+
+.searchpage__user {
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.searchpage__user-header {
+  display: flex;
+  align-items: center;
+}
+
+.searchpage__user-avatar {
+  margin-right: 12px;
+}
+
+.searchpage__user-username {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.searchpage__user-bio {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+@media screen and (min-width: 740px) {
+  .SearchPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .searchpage__container {
+    width: 400px;
+  }
+
+  .searchpage__user {
+    padding-bottom: 20px;
+  }
+
+  .searchpage__user-username {
+    font-size: 14px;
+  }
+
+  .searchpage__user-bio {
+    font-size: 13px;
+  }
+
+  .searchpage__container {
+    height: calc(100vh - 65px);
+  }
+}
+
+.searchpage__container .Suggestions {
+  display: block;
+  margin: auto;
+}
+
+.searchpage__container .suggestions__user {
+  display: none;
+}

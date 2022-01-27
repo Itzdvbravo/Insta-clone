@@ -1,0 +1,88 @@
+.editprofile__container {
+    padding: 20px 0 10px 0;
+}
+
+.editprofile__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 120px;
+}
+
+.editprofile__user-avatar {
+    width: 37px;
+    height: 37px;
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.editprofile__user-name {
+    text-align: left;
+    font-size: 16px;
+}
+
+.editprofile__user-cpp {
+    font-size: 12px;
+    color: #0095f6;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.editprofile__detail {
+    display: flex;
+    padding-right: 32px;
+    margin-bottom: 20px;
+}
+
+.editprofile__detail-input {
+    width: 250px;
+    padding: 3px 5px;
+    border: 1px solid lightgray;
+    font-size: 13px;
+}
+
+.editprofile__detail-input:focus {
+    outline: none;
+}
+
+.editprofile__detail-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: 10px;
+    padding: 0 32px;
+    text-align: right;
+    width: 120px;
+}
+
+.editprofile__detail-box {
+    display: block;
+    width: 250px;
+}
+
+.editprofile__detail-info {
+    font-size: 10px;
+    font-weight: 400;
+    color: #8e8e8e;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.editprofile__submit {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.editprofile__submit-button {
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 465px) {
+    .editprofile__detail-input, .editprofile__detail-box {
+        width: 150px;
+    }
+}
