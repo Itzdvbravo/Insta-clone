@@ -16,11 +16,13 @@ import RenderMessages from "./RenderMessages";
 import {uuidv4} from "../Components/Utils";
 
 function Messenger({connectedUsers, messages, setMessages, changesMade}) {
-    const {user} = useContext(userContext)
+    const {user} = useContext(userContext) // the main user
     const [users, setUsers] = useState(connectedUsers);
     useEffect(() => {
         setUsers(connectedUsers);
-    }, [connectedUsers])
+    }, [connectedUsers]) // created another state for it, because, if someone clicks "message" in a page to a user, and doesn't send a message 
+                         //it won't be added to connectedUsers/saved to user's "message" 
+                         //list or else it'll try to connect using onSnapShot which will give an error
 
     const [w,h] = useWindowSize();
     const [hash, sH] = useState(window.location.hash);
