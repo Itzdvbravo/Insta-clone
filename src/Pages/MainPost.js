@@ -1,5 +1,5 @@
 import {ChevronLeft, MoreHoriz} from '@material-ui/icons'
-import React, { useContext } from 'react'
+import React, {useCallback, useContext} from 'react'
 import { useEffect, useState } from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import isMobileContext from '../Contexts/isMobileContext'
@@ -11,7 +11,7 @@ import userContext from '../Contexts/userContext'
 import {deletePost, getPost, getUserData, togglePostLike} from '../Fetcher'
 import { actionTypes } from '../TempData/Reducer'
 import postsContext from "../Contexts/postsContext";
-import {ROUTER} from "../Constants";
+import {ERROR_ID, HOST, ROUTER} from "../Constants";
 
 const style = {
     position: 'absolute',
@@ -36,12 +36,22 @@ function MainPost({index}) {
 
     const toggleLike = () => {
         setLiked(!liked)
-        if (!liked) {
-            data.post.likes.push(user.uid)
-        } else {
-            data.post.likes.splice(data.post.likes.indexOf(user.uid), 1)
-        }
-        togglePostLike(data.post.id, !liked)
+        setBasePosts(posts => {
+            const index = posts.findIndex(p => p.post.id === data.post.id)
+            if (index > -1) {
+                if (!liked) {
+                    posts[index].post.likes.push(user.uid)
+                } else {
+                    posts[index].post.likes.splice(posts[index].post.likes.indexOf(user.uid), 1)
+                }
+            }
+            return posts
+        })
+        togglePostLike(data.post.id, !liked).catch((e) => {
+            // if (e.code === "permission-denied") {
+            dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+            // }
+        })
         setWH(1.2)
         setTimeout(() => { setWH(1) }, 0.2 * 1000)
     }
@@ -51,12 +61,32 @@ function MainPost({index}) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
 
+
+    const [comments, setComments] = useState([])
+    const [commentHeight, setCommentHeight] = useState(0)
+    const commentHeightRef = useCallback((node) => {
+        if (node) setCommentHeight(node.getBoundingClientRect().height)
+    }, [commentHeight]);
+
+
     useEffect(() => {
         if (id) {
             getPost(id).then((d) => {
-                getUserData(d.owner).then((user) => {
+                getUserData(d.owner).then((usr) => {
                     setLiked(d.likes.includes(user.uid))
-                    setData({post: {...d, id: id}, user})
+                    setData({post: {...d, id: id}, user: usr})
+                    Promise.all(d.comments.map(async ({id, comment}) => {
+                        try {
+                            const us = await getUserData(id)
+                            return {displayName: us.displayName, comment, uid: us.uid, avatar: us.avatar}
+                        } catch (e) {
+                            if (e.type === ERROR_ID.OTHER) {
+                                console.log(e)
+                            }
+                        }
+                    })).then((e) => {
+                        setComments(e.filter(e => Boolean(e)))
+                    })
                 }).catch(() => {
                     setError("Post was found but user was unfortunately not found")
                 })
@@ -96,16 +126,28 @@ function MainPost({index}) {
                                         }
                                     })
                                     setBasePosts(restructured)
-                                    deletePost(data.post.id)
+                                    deletePost(data.post.id).catch((e) => {
+                                        // if (e.code === "permission-denied") {
+                                        dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+                                        // }
+                                    })
                                     navigate(back ?? "/")
                                 }}>Delete</p>
                                 <Link to={`${ROUTER.EDIT}/${data.post.id}`}>Edit</Link>
+                                <p onClick={() => {
+                                    navigator.clipboard.writeText(HOST + "/p/" + data.post.id)
+                                    handleClose()
+                                }}>Copy Link</p>
                                 <p onClick={() => {
                                     handleClose()
                                 }}>Cancel</p>
                             </div>
                         ) : (
                             <div style={style} className='post__morePostOptions'>
+                                <p onClick={() => {
+                                    navigator.clipboard.writeText(HOST + "/p/" + data.post.id)
+                                    handleClose()
+                                }}>Copy Link</p>
                                 <p onClick={() => {
                                     handleClose()
                                 }}>Cancel</p>
@@ -121,7 +163,7 @@ function MainPost({index}) {
                             <MoreHoriz style={{width: '25px', height: '25px', cursor: 'pointer'}} onClick={() => {handleOpen()}}/>
                         </div>
                         <div className='mainpost__containerImgContainer'>
-                            <img src={data.post.image.img} className='mainpost__mainImage' alt={''}/>
+                            <img ref={commentHeightRef} src={data.post.image.img} className='mainpost__mainImage' alt={''}/>
                         </div>
                         <div className='mainpost__containerSideContainer'>
                             <div className='mainpost__owner mainpost__ownerPc'>
@@ -142,8 +184,24 @@ function MainPost({index}) {
                                         <ChatBubbleOutline />
                                     </div>
                                 </div>
-                                <div className='mainpost__captionAndCommentContainer'>
-                                    <p className='mainpost__caption'><span>{data.user.displayName}</span>{" " + data.post.image.caption}</p>
+                                <div className='mainpost__captionAndCommentContainer' style={{height: commentHeight - 95}}>
+                                    <p className='mainpost__caption' style={{marginBottom: 5}}><span>{data.user.displayName}</span>{": " + data.post.image.caption}</p>
+                                    {comments.map(({displayName,avatar,comment,uid}) => {
+                                        return (
+                                            <div className='mainpost__captionComment' key={uid}>
+                                                <Avatar
+                                                    src={avatar}
+                                                    alt={displayName}
+                                                    className='mainpost__captionCommentAvatar'
+                                                    onClick={() => {
+                                                        navigate(`${ROUTER.PROFILE}/${displayName}`)
+                                                    }}
+                                                    style={{cursor: 'pointer'}}
+                                                />
+                                                <p><span>{displayName + ":"}</span> {" " + comment}</p>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+export const HOST = 'http://localhost:3000'
 export const ROUTER = {
     HOME: '/',
     AUTHENTICATION: '/login',
@@ -20,13 +21,17 @@ export const ROUTER__MAIN = {
     MESSENGER: '/messenger'
 }
 
+export const ERROR_ID = {
+    NOT_EXIST: 'NOT_EXIST',
+    OTHER: 'OTHER'
+}
+
 export const HEADER__ON = [
     ROUTER.HOME,
     '/edit',
-    '/account'
 ]
 
-export const SYNCRONIZED__LOADING__DEPENDENCY__ON__LOCATION = {
+export const SYNCHRONIZED__LOADING__DEPENDENCY__ON__LOCATION = {
     post: [ROUTER.HOME, ROUTER.PROFILE],
     messenger: [ROUTER.MESSENGER]
 }

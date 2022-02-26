@@ -8,12 +8,13 @@ import {TextField} from "@material-ui/core";
 import {TagFaces} from "@material-ui/icons";
 import useWindowSize from "../customHooks/useWindowSize";
 import {actionTypes} from "../TempData/Reducer";
+import postsContext from "../Contexts/postsContext";
 
 function Edit() {
     const {user} = useContext(userContext)
 
     const id = useParams()["post"]
-    const [{}, dispatch] = useStateValue()
+    const {basePosts, setBasePosts} = useContext(postsContext)
     const [w, h] = useWindowSize()
 
     const [data, setData] = useState(null)
@@ -48,9 +49,9 @@ function Edit() {
 
     useEffect(() => {
         if (data) {
-            var px = w < 505 ? w - 20 : 500
-            var changeW = 0
-            var changeH = 0
+            const px = w < 505 ? w - 20 : 500;
+            let changeW = 0;
+            let changeH = 0;
             if (data.image.orientation === 0) {
                 changeW = px
             } else if (data.image.orientation === 1) {
@@ -78,11 +79,11 @@ function Edit() {
 
     const addCaption = (cap) => {
         if (cap && cap.length > 2000) {
-            var vib = 11
+            let vib = 11;
             setVibratingColor('red')
             for (let i=1; i < 4; i++) {
                 setTimeout(() => {
-                    if (i != 3) {
+                    if (i !== 3) {
                         vib = vib === 11 ? 13 : 11
                     } else {
                         setVibratingColor('inherit')
@@ -113,9 +114,12 @@ function Edit() {
                         </div>
                         <Link to={'/'} className={"edit__submitBtn"} onClick={() => {
                             updatePost(id, {image: {...data.image, caption: caption}})
-                            dispatch({
-                                type: actionTypes.CHANGE_IN_POST,
-                                cip: {...data, image: {...data.image, caption: caption}}
+                            setBasePosts(posts => {
+                                const index = posts.findIndex(p => p.post.id === id)
+                                if (index > -1) {
+                                    posts[index].post.image.caption = caption
+                                }
+                                return posts
                             })
                         }}>Done</Link>
                     </div>

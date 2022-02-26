@@ -10,12 +10,16 @@ import UserStory from "../Components/User-story";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 import isMobileContext from "../Contexts/isMobileContext";
 import postsContext from "../Contexts/postsContext";
+import OopsSomethingWentWrong from "../Components/OopsSomethingWentWrong";
+import {useStateValue} from "../TempData/StateProvider";
+import {actionTypes} from "../TempData/Reducer";
 
-function Home() {
+function Home({onPostScrolledToBottom}) {
     const {basePosts, setBasePosts} = useContext(postsContext)
     const navigate = useNavigate()
     const {user} = useContext(userContext)
     const isMobile = (useContext(isMobileContext))["isMobile"][0]
+    const [{oopsError}, dispatch] = useStateValue()
 
     const [left, setLeft] = useState(0)
     const [storyTT, setStoryTT] = useState(false)
@@ -29,19 +33,19 @@ function Home() {
         threshold: .5
     })
 
-    useEffect(() => {
-
-    }, []);
+    const checkIfScrolledToBottom = (e) => {
+        if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
+            onPostScrolledToBottom()
+        }
+    }
 
     return (
         <div>
             {user?.verified ? (
-                <div className="Home">
+                <div className="Home" onScroll={checkIfScrolledToBottom}>
+                    <OopsSomethingWentWrong open={oopsError.open} message={oopsError.message} onClose={() => {dispatch({type: actionTypes.OOPSERROR, oopsError: {open: false}})}}/>
                     <div className={"home__container"}>
                         <div className={"home__left"}>
-                            {/*<div className={"observer"} style={{position: "absolute", height: "100%", width: "482px"}}>*/}
-
-                            {/*</div>*/}
                             <div className={"stories"} onLoad={() => {if (!storyTT){setStoryTT(true)}}} style={{overflow: isMobile ? "scroll" : "hidden"}}>
                                 <div className={"stories__container"} style={{left: left}}>
                                     <UserStory user={user}/>

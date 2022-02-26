@@ -7,7 +7,7 @@ import useWindowSize from '../../customHooks/useWindowSize';
 import Step3 from './Step3';
 import { uploadPost } from '../../Fetcher';
 import {auth, storage} from "../../firebase";
-import {uuidv4} from "../Utils";
+import {uuidv4} from "../../Utils";
 
 function getModalStyle() {
     const top = 50;

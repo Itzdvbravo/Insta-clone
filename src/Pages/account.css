@@ -32,24 +32,41 @@
 
 .account__box {
     width: 100%;
+    min-height: 200px;
 }
 
 .account__choose {
     font-weight: 500;
-    margin-top: 20px;
+    text-align: center;
+    margin: 50% 0;
 }
 
-.account__back {
+.account__header {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    top: -1px;
+    background-color: white;
+    z-index: 9999;
+    width: 100vw;
+}
+
+.account__header p {
+    font-weight: 500;
+    flex: 1;
+}
+
+.account__backBtn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
     position: absolute;
 }
 
-@media screen and (min-width: 690px) {
-    .account__back {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 490px) {
+@media screen and (max-width: 740px) {
     .account__container {
         width: 100vw;
         border: none;

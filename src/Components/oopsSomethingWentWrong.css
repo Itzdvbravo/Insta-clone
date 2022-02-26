@@ -1,0 +1,14 @@
+.OopsSomethingWentWrong__container {
+    top: 3%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: red;
+    outline: none;
+    border-radius: 8px;
+
+    padding: 5px 10px;
+    font-size: 15px;
+    color: white;
+    font-weight: 500;
+}

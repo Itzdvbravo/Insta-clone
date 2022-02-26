@@ -3,7 +3,8 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from "react
 import {db} from "../firebase";
 import userContext from "../Contexts/userContext";
 import {
-    getUserData, getUserMessages,
+    deleteMessageFromFirebase,
+    getUserData, getUserMessages, removeUnread,
     sendMessage
 } from "../Fetcher";
 import {Avatar} from "@material-ui/core";
@@ -13,9 +14,10 @@ import isMobileContext from "../Contexts/isMobileContext";
 import {useNavigate} from "react-router-dom";
 import {useStateValue} from "../TempData/StateProvider";
 import RenderMessages from "./RenderMessages";
-import {uuidv4} from "../Components/Utils";
+import {convertTimestampToDayWeekMonthMin, uuidv4} from "../Utils";
+import {actionTypes} from "../TempData/Reducer";
 
-function Messenger({connectedUsers, messages, setMessages, changesMade}) {
+function Messenger({connectedUsers, updateUser, messages, setMessages, changesMade}) {
     const {user} = useContext(userContext)
     const [users, setUsers] = useState(connectedUsers);
     useEffect(() => {
@@ -56,6 +58,14 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
 
     useEffect(() => {
         if (messagingUser) {
+            if (messagingUser.unread && messagingUser.connected) {
+                removeUnread(messagingUser.uid).catch(err => {
+                    setHash("#")
+                    dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+
+                })
+                updateUser(messagingUser.uid, {unread: false})
+            }
             const inbox = document.querySelector('.messenger__inbox-body');
             if (inbox) {
                 inbox.scrollTop = inbox.scrollHeight;
@@ -65,7 +75,7 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
 
     useEffect(() => {
         if (hash.replace("#", "") !== "") {
-            var index = users.findIndex(u => u.uid === hash.replace("#", ""))
+            const index = users.findIndex(u => u.uid === hash.replace("#", ""));
             if (index !== -1) {
                 setMessagingUser(users[index])
             } else {
@@ -78,25 +88,43 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
                 })
             }
         }
+        setInterval(() => {
+            connectedUsers.forEach(u => {
+                const timestamp = convertTimestampToDayWeekMonthMin(u.latestMessage.timestamp.toDate())
+                updateUser(u.uid, {latestMessage: {...u.latestMessage, ago: timestamp}})
+            })
+        }, 60000)
     }, [])
 
     useEffect(() => {
         if (changesMade.length) {
             changesMade[1].forEach(c => {
-                if (c.type === 'added') {
-                    if (c.doc.data().user !== user.uid) {
-                        console.log(c.doc.id)
-                        setMessages(
-                            {...messages, [c.doc.data().user]: [{id: c.doc.id, ...c.doc.data()}, ...messages[c.doc.data().user]]}
-                        )
-                    }
-                } else if (c.type === 'modified') {
-                    const index = messages[changesMade[0]].findIndex(m => m.id === c.doc.id);
-                    messages[changesMade[0]][index] = {...c.doc.data(), id: c.doc.id}
+                switch (c.type){
+                    case "added":
+                        if (c.doc.data().user === user.uid) return;
+                        if (hash.replace("#", "") !== changesMade[0]) {
+                            updateUser(changesMade[0], {unread: true})
+                        } else {
+                            removeUnread(changesMade[0]).catch(err => {
+                                setHash("#")
+                                dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+
+                            })
+                        }
+                        break;
+                    default:
+                        break;
                 }
+
             })
         }
     }, [changesMade])
+
+    const deleteMessage = (message) => {
+        deleteMessageFromFirebase(messagingUser.uid, message).then(() => {}).catch(err => {
+            dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+        })
+    }
 
     return (
         <div className="Messenger">
@@ -109,12 +137,12 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
                 </center>
             )}
             {user && (
-                <div className="messenger__container" style={{height: w < 740 && !isMobile[1] ? "calc(100vh - 160)" : "calc(100vh - 80px)"}}>
+                <div className="messenger__container" style={{height: w < 740 && !isMobile[1] ? "calc(100vh - 160)" : !isMobile[1] ? "calc(100vh - 80px)" : "100vh"}}>
                     <div className="messenger__left" style={{display: w < 740 && hash.replace("#", "") !== "" ? 'none' : 'block'}}>
                         <p className={"messenger__owner"}>{user.displayName}</p>
                         <div className="messenger__list">
                             {users.map((user, i) => (
-                                <div key={user.uid} className={"messenger__item"} style={{cursor: hash === user.uid ? 'default' : 'pointer'}} onClick={() => {setHash(user.uid);setMessagingUser(user)}}>
+                                <div key={user.uid} className={"messenger__item"} style={{cursor: hash.replace("#", "") === user.uid ? 'default' : 'pointer'}} onClick={() => {if (hash.replace("#", "") === user.uid) {return;}setHash(user.uid);setMessagingUser(user)}}>
                                     <Avatar
                                         src={user.avatar}
                                         alt={user.displayName}
@@ -124,6 +152,7 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
                                         <p className="messenger__item-name">{user.displayName}</p>
                                         <div className="messenger__item-msg" style={{display: user.latestMessage ? 'flex' : 'none'}}><p className={"messenger__item-realMsg"}>{user.latestMessage?.msg}</p><p className={"messenger__item-msg__bullet"}>&#8226;</p> <p>{user.latestMessage?.ago}</p></div>
                                     </div>
+                                    <div className={"messenger__item-unread"} style={{backgroundColor: user.unread ? "#06b2f9" : "white"}}/>
                                 </div>
                             ))}
                         </div>
@@ -149,41 +178,35 @@ function Messenger({connectedUsers, messages, setMessages, changesMade}) {
                                         </div>
                                     </div>
                                 <div className={"messenger__inbox-body"}>
-                                    {messages[messagingUser.uid]?.length && (
-                                        <RenderMessages messages={messages[messagingUser.uid]} messagingUser={messagingUser} lastMessageRef={lastMessageRef}/>
+                                    {messages[messagingUser.uid]?.length !== 0 && (
+                                        <RenderMessages messages={messages[messagingUser.uid]} deleteMessage={deleteMessage} messagingUser={messagingUser} lastMessageRef={lastMessageRef}/>
                                     )}
                                 </div>
                                 <div className={"messenger__inbox-input"}>
                                     <TagFaces />
                                     <input placeholder={"Message..."} onKeyPress={(e) => {
                                         if (e.code.toLowerCase() === 'enter' && e.target.value !== '') {
-                                            var msg = e.target.value
-                                            const copy = users
-                                            var index = users.findIndex(user => user.uid === messagingUser.uid)
-                                            users.splice(index, 1)
+                                            const msg = e.target.value;
+                                            const index = users.findIndex(user => user.uid === messagingUser.uid); users.splice(index, 1)
                                             users.unshift({
                                                 ...messagingUser,
-                                                latestMessage: {
-                                                    msg: msg,
-                                                    ago: 'Just now',
-                                                    timestamp: Date.now()
-                                                }
+                                                latestMessage: {msg: msg, ago: 'Just now', timestamp: Date.now()}
                                             })
                                             const uuid = uuidv4()
                                             setMessages(currMessages => {
                                                 return {...currMessages,
                                                     [messagingUser.uid]: [{
-                                                        msg: msg,
-                                                        user: user.uid,
+                                                        msg: msg, user: user.uid,
                                                         timestamp: {
                                                             seconds: (new Date()).getTime() / 1000,
                                                             toDate: function() {return this.seconds * 1000}
-                                                        },
-                                                        id: uuid
+                                                        }, id: uuid
                                                 } ,...currMessages[messagingUser.uid]]}
                                             })
                                             document.querySelector('.messenger__inbox-body').scrollTop = document.querySelector('.messenger__inbox-body').scrollHeight
-                                            sendMessage(messagingUser.uid, msg, uuid)
+                                            sendMessage(messagingUser.uid, msg, uuid).catch(err => {
+                                                dispatch({type: actionTypes.OOPSERROR, oopsError: {open: true}})
+                                            })
                                             e.target.value = ''
                                         }
                                     }}/>

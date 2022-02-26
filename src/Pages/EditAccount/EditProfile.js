@@ -1,9 +1,13 @@
 import './editprofile.css';
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import userContext from "../../Contexts/userContext";
 import {Avatar} from "@material-ui/core";
 import {sessionCache, TESTER} from "../../Fetcher";
 import {auth, db, storage} from "../../firebase";
+import {ChevronLeft} from "@material-ui/icons";
+import isMobileContext from "../../Contexts/isMobileContext";
+import {useNavigate} from "react-router-dom";
+import {useStateValue} from "../../TempData/StateProvider";
 
 function EditProfile() {
     const {user} = useContext(userContext)

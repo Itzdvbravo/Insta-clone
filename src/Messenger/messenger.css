@@ -162,8 +162,11 @@
     margin-right: 12px;
 }
 
-.messenger__message-right {
+.messenger__message-flex {
     display: flex;
+}
+
+.messenger__message-right {
     justify-content: flex-end;
 }
 
@@ -205,6 +208,68 @@
     font-weight: 500;
 }
 
+.messenger__item-unread {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.messenger__moreOpt {
+    display: none;
+    align-items: center;
+    color: #8e8e8e;
+    border-radius: 8px;
+}
+
+.messenger__moreOpt svg {
+    width: 15px;
+    height: 15px;
+}
+
+.messenger__moreOpt p {
+    font-size: 11px;
+}
+
+.messenger__moreOpt > * {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.messenger__moreOpt-me {
+    margin-right: 20px;
+}
+
+.messenger__moreOpt-u {
+    margin-left: 20px;
+}
+
+.messenger__message:hover .messenger__moreOpt {
+    display: flex;
+}
+
+.messenger__message-modal {
+    background-color: white;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.messenger__message-modal > * {
+    padding: 7px 10px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.messenger__message-deleted {
+    font-size: 13px;
+    background-color: #d9d9d9;
+    font-style: italic;
+    padding: 0 2px;
+    border-radius: 4px;
+}
 
 @media screen and (max-width: 750px) {
     .messenger__container {
@@ -223,7 +288,7 @@
         border: none;
         height: 100vh;
         background-color: white;
-        z-index: 9999;
+        z-index: 1200;
     }
 
     .messenger__owner {
@@ -232,6 +297,10 @@
 
     .messenger__left {
         border-right: none;
+    }
+
+    .messenger__list {
+        width: 100vw;
     }
 
     .messenger__item-avatar {

@@ -3,33 +3,8 @@ import {
     db
 } from "./firebase";
 import firebase from "firebase/compat";
+import {ERROR_ID} from "./Constants";
 export const TESTER = "t"
-
-export const convertTimestampToDayWeekMonthMin = (timestamp) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const diffInMins = Math.round(diff / 60000);
-    const diffInHours = Math.round(diff / 3600000);
-    const diffInDays = Math.round(diff / 86400000);
-    const diffInWeeks = Math.round(diff / 604800000);
-    const diffInMonths = Math.round(diff / 2629800000);
-    if (diffInMins <= 1) {
-        return "Just now";
-    } else if (diffInMins > 1 && diffInMins < 60) {
-        return diffInMins + "m ago";
-    } else if (diffInHours < 24) {
-        return diffInHours + "h ago";
-    } else if (diffInDays < 7) {
-        return diffInDays + "d ago";
-    } else if (diffInWeeks < 4) {
-        return diffInWeeks + "w ago";
-    } else if (diffInMonths < 12) {
-        return diffInMonths + "m ago";
-    } else {
-        return date.toLocaleString();
-    }
-}
 
 export const localStorageCache = {
     get: (key) => {
@@ -55,6 +30,14 @@ export const sessionCache = {
     }
 }
 
+// setTimeout(() => {
+//     db.collection("posts").get().then(snap => {
+//        setTimeout(() => {
+//            console.log(snap.docs[0].data())
+//        }, [3000])
+//     })
+// }, 5000)
+
 export const getUserData = (userId) => {
     return new Promise((resolve, reject) => {
         if (sessionCache.get(userId)) {
@@ -71,11 +54,11 @@ export const getUserData = (userId) => {
                         "uid": doc.id
                     });
                 } else {
-                    reject("Not exist");
+                    reject({error: "Not exist", type: ERROR_ID.NOT_EXIST});
                 }
             })
             .catch(err => {
-                reject(err);
+                reject({error: err, type: ERROR_ID.OTHER});
             });
     });
 };
@@ -110,7 +93,7 @@ export const uploadPost = (post) => {
         db.collection("posts").add({
             image: post,
             likes: [],
-            comments: {},
+            comments: [],
             owner: auth.currentUser.uid,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then((snap) => {
@@ -129,69 +112,94 @@ export const uploadPost = (post) => {
     })
 }
 
-export const getUserPosts = (user, timing = [">", 0]) => {
+export const getUserPosts = (user, timing = [">", 0], limit = 25) => {
     return new Promise((resolve, reject) => {
-        if (sessionCache.get("userPosts")) {
-            const list = sessionCache.get("userPosts");
+        // if (sessionCache.get("userPosts")) {
+        //     const list = sessionCache.get("userPosts");
+        //     const posts = [];
+        //     list.forEach(post => {
+        //         posts.push(sessionCache.get("post-" + post));
+        //     });
+        //     resolve(posts);
+        //     return;
+        // }
+        db.collection("posts")
+            .where("owner", '==', user)
+            .orderBy("timestamp", "desc")
+            .where("timestamp", timing[0], new Date(timing[1]))
+            .limit(limit)
+            .get().then((snapshot) => {
             const posts = [];
-            list.forEach(post => {
-                posts.push(sessionCache.get("post-" + post));
-            });
-            resolve(posts);
-            return;
-        }
-        db.collection("posts").where("owner", '==', user).where("timestamp", timing[0], new Date(timing[1])).get().then((snapshot) => {
-            var posts = []
-            var forCache = []
+            // const forCache = [];
             snapshot.docs.forEach((snap) => {
-                if (!sessionCache.get("post-" + snap.id)) {
-                    sessionCache.set("post-" + snap.id, {...snap.data(), id: snap.id});
-                }
+                // if (!sessionCache.get("post-" + snap.id)) {
+                //     sessionCache.set("post-" + snap.id, {...snap.data(), id: snap.id});
+                // }
                 posts.push({
                     ...snap.data(),
                     id: snap.id
                 })
-                forCache.push(snap.id)
+                // forCache.push(snap.id)
             })
-            sessionCache.set("userPosts-" + user, forCache)
+            // sessionCache.set("userPosts-" + user, forCache)
+            resolve(posts)
+        })
+    })
+}
+
+export const getUserPostsByLikes = (user, lessThan = 0, limit = 25) => {
+    return new Promise((resolve, reject) => {
+        // if (sessionCache.get("userPosts")) {
+        //     const list = sessionCache.get("userPosts");
+        //     const posts = [];
+        //     list.forEach(post => {
+        //         posts.push(sessionCache.get("post-" + post));
+        //     });
+        //     resolve(posts);
+        //     return;
+        // }
+        db.collection("posts")
+            .where("owner", '==', user)
+            .orderBy("likesCount", "desc")
+            .where("likesCount", "<=", lessThan)
+            .limit(limit)
+            .get().then((snapshot) => {
+            const posts = [];
+            // const forCache = [];
+            snapshot.docs.forEach((snap) => {
+                // if (!sessionCache.get("post-" + snap.id)) {
+                //     sessionCache.set("post-" + snap.id, {...snap.data(), id: snap.id});
+                // }
+                posts.push({
+                    ...snap.data(),
+                    id: snap.id
+                })
+                // forCache.push(snap.id)
+            })
+            // sessionCache.set("userPosts-" + user, forCache)
             resolve(posts)
         })
     })
 }
 
 export const togglePostLike = (id, toggleTo) => {
-    const old = sessionCache.get("post-" + id);
-    if (old) {
-        old.likes = old.likes.filter(user => user !== auth.currentUser.uid)
-        if (toggleTo) {
-            old.likes.push(auth.currentUser.uid)
-        }
-        sessionCache.set("post-"+id, old)
-    }
-    db.collection("posts").doc(id).update({
-        likes: toggleTo ?
-            firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid) : firebase.firestore.FieldValue.arrayRemove(auth.currentUser.uid)
-    })
-}
-
-export const dumbModificationForUsuablePost = (posts) => {
-    return new Promise(async (resolve, reject) => {
-        var finalData = []
-        if (!posts.length) {
-            resolve([])
-        }
-        for (let i = 0; i < posts.length; i++) {
-            var user = await getUserData(posts[i].owner)
-
-            finalData.push({
-                post: posts[i],
-                user: user
-            })
-
-            if (i === posts.length - 1) {
-                resolve(finalData)
+    return new Promise((resolve, reject) => {
+        const old = sessionCache.get("post-" + id);
+        if (old) {
+            old.likes = old.likes.filter(user => user !== auth.currentUser.uid)
+            if (toggleTo) {
+                old.likes.push(auth.currentUser.uid)
             }
+            sessionCache.set("post-"+id, old)
         }
+        db.collection("posts").doc(id).update({
+            likes: toggleTo ?
+                firebase.firestore.FieldValue.arrayUnion(auth.currentUser.uid) : firebase.firestore.FieldValue.arrayRemove(auth.currentUser.uid),
+            likesCount: toggleTo ?
+                firebase.firestore.FieldValue.increment(1) : firebase.firestore.FieldValue.increment(-1)
+        }).then(e => resolve()).catch(err => {
+            reject(err)
+        })
     })
 }
 
@@ -255,7 +263,12 @@ export const toggleFollow = (id, toggleTo = true) => {
 export const getPost = (id) => {
     return new Promise((resolve, reject) => {
         if (sessionCache.get("post-"+ id)) {
-            resolve(sessionCache.get("post-"+ id))
+            const post = sessionCache.get("post-" + id);
+            resolve({...post, timestamp: {
+                seconds: post.timestamp.seconds,
+                nanoseconds: post.timestamp.nanoseconds,
+                toDate: function (){return new Date(1e3 * this.seconds + this.nanoseconds / 1e6)}
+            }})
             return;
         }
         db.collection("posts").doc(id).get().then((snap) => {
@@ -270,13 +283,19 @@ export const getPost = (id) => {
 }
 
 export const updatePost = (id, data) => {
-    sessionCache.set("post-"+id, data)
-    db.collection("posts").doc(id).update(data)
+    return new Promise((resolve, reject) => {
+        sessionCache.set("post-"+id, {...sessionCache.get("post-"+id), image: data.image})
+        db.collection("posts").doc(id).update(data).then(e => resolve()).catch(err => {
+            reject(err)
+        })
+    })
 }
 
 export const deletePost = (id) => {
-    sessionCache.remove("post-"+id)
-    db.collection("posts").doc(id).delete()
+    return new Promise((resolve, reject) => {
+        sessionCache.remove("post-"+id)
+        db.collection("posts").doc(id).delete().then(e => {resolve()}).catch(err => reject(err))
+    })
 }
 
 export const dumbness100 = (id1, id2) => {
@@ -323,7 +342,7 @@ export const getUsersLatestMessage = (user) => {
                 resolve(snap.docs[0].data())
             }
         }).catch(e => {
-            console.log(e)
+            reject(e)
         })
     })
 }
@@ -350,14 +369,64 @@ export const sendMessage = (user, message, uuid) => {
             db.collection("messages").doc(dumbness100(auth.currentUser.uid, user)).collection("messages").doc(uuid).set({
                 msg: message,
                 user: auth.currentUser.uid,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                notReadBy: [user],
+                deleted: false
             }).then(() => {
                 resolve(d)
             }).catch((e) => {
-                console.log(e)
+                reject(e)
             })
         }).catch((e) => {
-            console.log(e)
+            reject(e)
+        })
+    })
+}
+
+export const addComment = (post, comment) => {
+    return new Promise((resolve, reject) => {
+        const old = sessionCache.get("post-" + post);
+        if (old) {
+            old.comments.push({id: auth.currentUser.uid, comment})
+            sessionCache.set("post-"+post, old)
+        }
+        db.collection("posts").doc(post).update({
+            comments: firebase.firestore.FieldValue.arrayUnion({id: auth.currentUser.uid, comment})
+        }).then(() => {
+            resolve()
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
+export const removeUnread = (user) => {
+    return new Promise((resolve, reject) => {
+        db.collection("messages").doc(dumbness100(auth.currentUser.uid, user)).collection("messages").where("notReadBy", "array-contains", auth.currentUser.uid).get().then((snap) => {
+            snap.docs.forEach(doc => {
+                doc.ref.update({
+                    notReadBy: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.uid)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        }).then(() => {
+            resolve()
+        }).catch(e => {
+            reject(e)
+        })
+    })
+}
+
+export const deleteMessageFromFirebase = (user, uuid) => {
+    return new Promise((resolve, reject) => {
+        db.collection("messages").doc(dumbness100(auth.currentUser.uid, user)).collection("messages").doc(uuid).update({
+            deleted: true,
+            msg: "This message has been deleted"
+        }).then(() => {
+            resolve()
+        }).catch((e) => {
+            reject(e)
         })
     })
 }

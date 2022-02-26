@@ -2,7 +2,7 @@ import Message from "./Message";
 import React, {useContext, useEffect} from "react";
 import userContext from "../Contexts/userContext";
 
-function RenderMessages({messages, messagingUser, lastMessageRef}) {
+function RenderMessages({messages, deleteMessage, messagingUser, lastMessageRef}) {
     const {user} = useContext(userContext)
     var prevMsgBy = null;
 
@@ -58,7 +58,7 @@ function RenderMessages({messages, messagingUser, lastMessageRef}) {
                 {addTop && (
                     <div ref={lastMessageRef} className={"messenger__timestamp"}><p>{thisDate.toLocaleString('en-US', {timeZone: "Asia/Kolkata"})}</p></div>
                 )}
-                <Message message={message} messagingUser={messagingUser} showAvatar={showAvatar} byMe={message.user === user.uid} margin={addBelow ? '0' : margin}/>
+                <Message message={message} deleteMessage={deleteMessage} messagingUser={messagingUser} showAvatar={showAvatar} byMe={message.user === user.uid} margin={addBelow ? '0' : margin}/>
                 {addBelow && (
                     <div className={"messenger__timestamp"}><p>{prev.toLocaleString('en-US', options)}</p></div>
                 )}

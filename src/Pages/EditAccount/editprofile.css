@@ -81,8 +81,32 @@
     margin: 0 auto;
 }
 
-@media screen and (max-width: 465px) {
-    .editprofile__detail-input, .editprofile__detail-box {
-        width: 150px;
+@media screen and (max-width: 480px) {
+    .editprofile__user {
+        margin-left: 10px;
+    }
+
+    .editprofile__detail-title {
+        margin-left: 15px;
+        text-align: left;
+        padding: 0;
+    }
+
+    .editprofile__detail-box {
+        padding: 0 21px;
+    }
+
+    .editprofile__detail-input {
+        margin-top: 5px;
+    }
+
+    .editprofile__detail {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 290px) {
+    .editprofile__detail-input {
+        width: calc(100vw - 40px);
     }
 }

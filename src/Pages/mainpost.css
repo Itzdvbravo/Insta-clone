@@ -94,6 +94,7 @@
 .mainpost__captionAndCommentContainer {
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
 
 .mainpost__caption {
@@ -102,6 +103,18 @@
 
 .mainpost__caption span {
   font-weight: 500;
+}
+
+.mainpost__captionComment {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.mainpost__captionCommentAvatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
 }
 
 @media screen and (min-width: 550px) {

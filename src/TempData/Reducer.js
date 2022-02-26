@@ -1,24 +1,19 @@
 export const initialState = {
-    cip: null,
     search: null,
     back: null,
-    newdata: null
+    newdata: null,
+    oopsError: {open: false, message: null},
 };
 
 export const actionTypes = {
-    CHANGE_IN_POST: "CHANGE_IN_POST",
     SEARCH: "SEARCH",
     BACK: "BACK",
-    NEWDATA: "NEWDATA"
+    NEWDATA: "NEWDATA",
+    OOPSERROR: "OOPSERROR",
 }
 
 const Reducer = (state, action) => {
     switch (action.type) {
-        case actionTypes.CHANGE_IN_POST:
-            return {
-                ...state,
-                cip: action.cip
-            };
         case actionTypes.SEARCH:
             return {
                 ...state,
@@ -33,6 +28,11 @@ const Reducer = (state, action) => {
             return {
                 ...state,
                 newdata: action.newdata
+            };
+        case actionTypes.OOPSERROR:
+            return {
+                ...state,
+                oopsError: action.oopsError
             };
         default:
             return state;
